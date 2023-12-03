@@ -66,7 +66,7 @@ pub fn get_number_from_line(line: &str) -> i64 {
     f_digit.1 * 10 + l_digit.1
 }
 
-pub fn day1_solution() -> Result<i64, std::io::Error> {
+pub fn solution() -> Result<i64, std::io::Error> {
     let f = File::open("input1")?;
     let reader = BufReader::new(f);
 
