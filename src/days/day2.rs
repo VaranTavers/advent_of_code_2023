@@ -32,10 +32,7 @@ fn validate_1(line: &str) -> Option<usize> {
     Some(game_num)
 }
 
-pub fn solution_1() -> Result<usize, std::io::Error> {
-    let f = File::open("inputs/input2")?;
-    let reader = BufReader::new(f);
-
+pub fn solution_1(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     Ok(reader.lines().filter_map(|x| validate_1(&x.unwrap())).sum())
 }
 
@@ -70,9 +67,6 @@ fn validate_2(line: &str) -> Option<usize> {
     Some(max_blue * max_green * max_red)
 }
 
-pub fn solution_2() -> Result<usize, std::io::Error> {
-    let f = File::open("inputs/input2")?;
-    let reader = BufReader::new(f);
-
+pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     Ok(reader.lines().filter_map(|x| validate_2(&x.unwrap())).sum())
 }

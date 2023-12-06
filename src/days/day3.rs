@@ -91,10 +91,7 @@ fn turn_charvec_in_numvec(cv: Vec<char>) -> Vec<i64> {
     res
 }
 
-pub fn solution() -> Result<i64, std::io::Error> {
-    let f = File::open("inputs/input3")?;
-    let reader = BufReader::new(f);
-
+pub fn solution(reader: BufReader<File>) -> Result<i64, std::io::Error> {
     let chars = reader
         .lines()
         .filter_map(|x| x.map(|y| y.chars().collect::<Vec<char>>()).ok())
@@ -123,10 +120,7 @@ pub fn solution() -> Result<i64, std::io::Error> {
     Ok(sum)
 }
 
-pub fn solution_2() -> Result<i64, std::io::Error> {
-    let f = File::open("inputs/input3")?;
-    let reader = BufReader::new(f);
-
+pub fn solution_2(reader: BufReader<File>) -> Result<i64, std::io::Error> {
     let chars = reader
         .lines()
         .filter_map(|x| x.map(|y| y.chars().collect::<Vec<char>>()).ok())

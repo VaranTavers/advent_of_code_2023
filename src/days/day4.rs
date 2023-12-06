@@ -41,10 +41,7 @@ fn process_line(line: &str) -> i64 {
         / 2
 }
 
-pub fn solution() -> Result<i64, std::io::Error> {
-    let f = File::open("inputs/input4")?;
-    let reader = BufReader::new(f);
-
+pub fn solution(reader: BufReader<File>) -> Result<i64, std::io::Error> {
     let s = reader.lines().map(|x| process_line(&x.unwrap())).sum();
 
     Ok(s)
@@ -62,10 +59,7 @@ fn process_line_2(line: &str) -> usize {
     card_elf.iter().filter(|x| card_correct.contains(x)).count()
 }
 
-pub fn solution_2() -> Result<usize, std::io::Error> {
-    let f = File::open("inputs/input4")?;
-    let reader = BufReader::new(f);
-
+pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     let s = reader
         .lines()
         .map(|x| process_line_2(&x.unwrap()))

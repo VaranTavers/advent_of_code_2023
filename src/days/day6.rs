@@ -1,4 +1,3 @@
-use core::time;
 use std::{
     fs::File,
     io::{BufRead, BufReader},
@@ -24,10 +23,7 @@ fn calculate_one((time, record): (usize, usize)) -> usize {
     x2.max(x1) - x1.min(x2) + 1
 }
 
-pub fn solution() -> Result<usize, std::io::Error> {
-    let f = File::open("inputs/input6")?;
-    let reader = BufReader::new(f);
-
+pub fn solution(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     let lines = reader.lines().flatten().collect::<Vec<String>>();
 
     let times_line = lines[0].split(':').collect::<Vec<&str>>();
@@ -60,10 +56,7 @@ pub fn solution() -> Result<usize, std::io::Error> {
     Ok(calcs.iter().fold(1, |x, y| x * (*y)))
 }
 
-pub fn solution_2() -> Result<usize, std::io::Error> {
-    let f = File::open("inputs/input6")?;
-    let reader = BufReader::new(f);
-
+pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     let lines = reader.lines().flatten().collect::<Vec<String>>();
 
     let times_line = lines[0].split(':').collect::<Vec<&str>>();

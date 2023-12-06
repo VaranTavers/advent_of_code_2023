@@ -74,10 +74,7 @@ fn get_data(file: BufReader<File>) -> (Vec<usize>, Vec<Mapper>) {
     (seeds, mappers)
 }
 
-pub fn solution() -> Result<usize, std::io::Error> {
-    let f = File::open("inputs/input5")?;
-    let reader = BufReader::new(f);
-
+pub fn solution(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     let (seeds, mappers) = get_data(reader);
 
     let results = mappers.iter().fold(seeds, |acc, mapper| {
@@ -106,10 +103,7 @@ fn list_to_pairs<T>(vec: Vec<T>) -> Vec<(T, T)> {
     seed_intervals
 }
 
-pub fn solution_2() -> Result<usize, std::io::Error> {
-    let f = File::open("inputs/input5")?;
-    let reader = BufReader::new(f);
-
+pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     let (seeds, mut mappers) = get_data(reader);
 
     mappers = mappers.iter_mut().rev().map(|x| x.get_inverse()).collect();

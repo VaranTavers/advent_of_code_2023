@@ -1,15 +1,44 @@
-use days::day1;
+use std::{
+    fs::File,
+    io::{self, BufReader},
+};
 
-use crate::days::{day2, day3, day4, day5, day6};
+use crate::days::{day1, day2, day3, day4, day5, day6};
 
 mod days;
 
-fn main() {
-    // println!("Day1: {}", day1::solution().unwrap());
-    // println!("Day2: {}", day2::solution_2().unwrap());
-    // println!("Day3: {}", day3::solution_2().unwrap());
-    // println!("Day4: {}", day4::solution_2().unwrap());
+fn main() -> Result<(), io::Error> {
+    let day = 6;
+    let part = 2;
 
-    //println!("Day5: {}", day5::solution_2().unwrap());
-    println!("Day6: {}", day6::solution_2().unwrap());
+    let f = File::open(format!("inputs/input{}", day))?;
+    let reader = BufReader::new(f);
+
+    print!("Day {day} (Part: {part}): ");
+    match part {
+        1 => {
+            match day {
+                1 => println!("{}", day1::solution(reader).unwrap()),
+                2 => println!("{}", day2::solution_1(reader).unwrap()),
+                3 => println!("{}", day3::solution(reader).unwrap()),
+                4 => println!("{}", day4::solution(reader).unwrap()),
+                5 => println!("{}", day5::solution(reader).unwrap()),
+                6 => println!("{}", day6::solution(reader).unwrap()),
+                _ => println!("What?"),
+            };
+        }
+        _ => {
+            match day {
+                1 => println!("{}", day1::solution(reader).unwrap()),
+                2 => println!("{}", day2::solution_2(reader).unwrap()),
+                3 => println!("{}", day3::solution_2(reader).unwrap()),
+                4 => println!("{}", day4::solution_2(reader).unwrap()),
+                5 => println!("{}", day5::solution_2(reader).unwrap()),
+                6 => println!("{}", day6::solution_2(reader).unwrap()),
+                _ => println!("What?"),
+            };
+        }
+    };
+
+    Ok(())
 }
