@@ -247,6 +247,7 @@ pub fn partition(map: &mut Vec<Vec<char>>, pos: (usize, usize)) -> usize {
 }
 
 pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
+    // Solved, but took inspiration from a solution
     let mut map = reader
         .lines()
         .flatten()
