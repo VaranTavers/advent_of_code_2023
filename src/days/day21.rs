@@ -178,21 +178,39 @@ pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     if maps_left % 2 == 0 {
         //Diamond - Corners
         sum -= even_visit * 4 - q1_visit - q2_visit - q3_visit - q4_visit;
-        // Diamond - Sides
-        sum -= (maps_left - 1)
-            * (even_visit * 4 - q1_visit.max(q4_visit)
-                + q1_visit.max(q3_visit)
-                + q2_visit.max(q3_visit)
-                + q2_visit.max(q4_visit))
     } else {
         //Corners
         sum -= odd_visit * 4 - q1_visit - q2_visit - q3_visit - q4_visit;
-        // Diamond - Sides Something is wrong
-        sum -= (maps_left - 1)
-            * (odd_visit * 4 - q1_visit.max(q4_visit)
-                + q1_visit.max(q3_visit)
-                + q2_visit.max(q3_visit)
-                + q2_visit.max(q4_visit))
+    }
+
+    let mut map_ver = map.clone();
+    map_ver.map[start_point.0][start_point.1] = '.';
+    map_ver.map[map.map.len() - 1][0] = 'S';
+    /*let q1_m = simulate_moves(&map, width / 2 - 1);
+    pprint(&q1_m);*/
+    let q1_visit = count_moves(&simulate_moves(&map_ver, width + width / 2 - 1));
+
+    map_ver.map[map.map.len() - 1][0] = '.';
+    map_ver.map[map.map.len() - 1][map.map[map.map.len() - 1].len() - 1] = 'S';
+    let q2_visit = count_moves(&simulate_moves(&map_ver, width + width / 2 - 1));
+
+    map_ver.map[map.map.len() - 1][map.map[map.map.len() - 1].len() - 1] = '.';
+    map_ver.map[0][map.map[0].len() - 1] = 'S';
+    let q3_visit = count_moves(&simulate_moves(&map_ver, width + width / 2 - 1));
+
+    map_ver.map[0][map.map[0].len() - 1] = '.';
+    map_ver.map[0][0] = 'S';
+    let q4_visit = count_moves(&simulate_moves(&map_ver, width + width / 2 - 1));
+
+    println!("{q1_visit} {q2_visit} {q3_visit} {q4_visit}");
+
+    // Got inspiration
+    if maps_left % 2 == 0 {
+        //Diamond - Corners
+        sum -= (maps_left - 1) * (even_visit * 4 - q1_visit - q2_visit - q3_visit - q4_visit);
+    } else {
+        //Corners
+        sum -= (maps_left - 1) * (odd_visit * 4 - q1_visit - q2_visit - q3_visit - q4_visit);
     }
 
     Ok(sum)
