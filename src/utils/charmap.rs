@@ -4,7 +4,7 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct CharMap {
     pub map: Vec<Vec<char>>,
 }
@@ -59,6 +59,31 @@ impl CharMap {
 
         for line in self.map.iter() {
             res.push(line.iter().map(&f).collect::<Vec<T>>());
+        }
+
+        res
+    }
+
+    pub fn find_first(&self, needle: char) -> Option<(usize, usize)> {
+        for (i, row) in self.map.iter().enumerate() {
+            for (j, c) in row.iter().enumerate() {
+                if *c == needle {
+                    return Some((i, j));
+                }
+            }
+        }
+
+        None
+    }
+
+    pub fn find_all(&self, needle: char) -> Vec<(usize, usize)> {
+        let mut res = Vec::new();
+        for (i, row) in self.map.iter().enumerate() {
+            for (j, c) in row.iter().enumerate() {
+                if *c == needle {
+                    res.push((i, j));
+                }
+            }
         }
 
         res

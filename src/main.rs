@@ -4,15 +4,15 @@ use std::{
 };
 
 use crate::days::{
-    day1, day10, day11, day12, day13, day14, day15, day16, day17, day2, day3, day4, day5, day6,
-    day7, day8, day9,
+    day1, day10, day11, day12, day13, day14, day15, day16, day17, day18, day19, day2, day20, day21,
+    day3, day4, day5, day6, day7, day8, day9,
 };
 
 mod days;
 mod utils;
 
 fn main() -> Result<(), io::Error> {
-    let day = 17;
+    let day = 21;
     let part = 2;
 
     let f = File::open(format!("inputs/input{}", day))?;
@@ -39,6 +39,10 @@ fn main() -> Result<(), io::Error> {
                 15 => println!("{}", day15::solution(reader).unwrap()),
                 16 => println!("{}", day16::solution(reader).unwrap()),
                 17 => println!("{}", day17::solution(reader).unwrap()),
+                18 => println!("{}", day18::solution(reader).unwrap()),
+                19 => println!("{}", day19::solution(reader).unwrap()),
+                20 => println!("{}", day20::solution(reader).unwrap()),
+                21 => println!("{}", day21::solution(reader).unwrap()),
                 _ => println!("What?"),
             };
         }
@@ -61,6 +65,10 @@ fn main() -> Result<(), io::Error> {
                 15 => println!("{}", day15::solution_2(reader).unwrap()),
                 16 => println!("{}", day16::solution_2(reader).unwrap()),
                 17 => println!("{}", day17::solution_2(reader).unwrap()),
+                18 => println!("{}", day18::solution_2(reader).unwrap()),
+                19 => println!("{}", day19::solution_2(reader).unwrap()),
+                20 => println!("{}", day20::solution_2(reader).unwrap()),
+                21 => println!("{}", day21::solution_2(reader).unwrap()),
                 _ => println!("What?"),
             };
         }
