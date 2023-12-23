@@ -5,14 +5,14 @@ use std::{
 
 use crate::days::{
     day1, day10, day11, day12, day13, day14, day15, day16, day17, day18, day19, day2, day20, day21,
-    day3, day4, day5, day6, day7, day8, day9,
+    day22, day23, day3, day4, day5, day6, day7, day8, day9,
 };
 
 mod days;
 mod utils;
 
 fn main() -> Result<(), io::Error> {
-    let day = 21;
+    let day = 23;
     let part = 2;
 
     let f = File::open(format!("inputs/input{}", day))?;
@@ -43,6 +43,8 @@ fn main() -> Result<(), io::Error> {
                 19 => println!("{}", day19::solution(reader).unwrap()),
                 20 => println!("{}", day20::solution(reader).unwrap()),
                 21 => println!("{}", day21::solution(reader).unwrap()),
+                22 => println!("{}", day22::solution(reader).unwrap()),
+                23 => println!("{}", day23::solution(reader).unwrap()),
                 _ => println!("What?"),
             };
         }
@@ -69,6 +71,8 @@ fn main() -> Result<(), io::Error> {
                 19 => println!("{}", day19::solution_2(reader).unwrap()),
                 20 => println!("{}", day20::solution_2(reader).unwrap()),
                 21 => println!("{}", day21::solution_2(reader).unwrap()),
+                22 => println!("{}", day22::solution_2(reader).unwrap()),
+                23 => println!("{}", day23::solution_2(reader).unwrap()),
                 _ => println!("What?"),
             };
         }
