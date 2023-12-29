@@ -200,6 +200,181 @@ pub fn solution(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     Ok(map.iter().map(|x| x.iter().flatten().count()).sum())
 }
 
+pub fn map_bounds_from_lines(lines: &[(u8, usize)]) -> ((usize, usize), (usize, usize)) {
+    let mut min_row: i64 = 0;
+    let mut max_row: i64 = 0;
+    let mut min_col: i64 = 0;
+    let mut max_col: i64 = 0;
+    let mut row: i64 = 0;
+    let mut col: i64 = 0;
+
+    for (c, len) in lines {
+        match c {
+            1 => row -= *len as i64,
+            3 => row += *len as i64,
+            2 => col -= *len as i64,
+            0 => col += *len as i64,
+            _ => {}
+        }
+        if row < min_row {
+            min_row = row;
+        }
+        if row > max_row {
+            max_row = row;
+        }
+        if col > max_col {
+            max_col = col;
+        }
+        if col < min_col {
+            min_col = col;
+        }
+    }
+    let cols = (max_col - min_col) as usize + 1;
+    let rows = (max_row - min_row) as usize + 1;
+
+    let start_row: usize = (0 - min_row) as usize;
+    let start_col: usize = (0 - min_col) as usize;
+
+    ((rows, cols), (start_row, start_col))
+}
+
 pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
-    todo!("Calculate squares from top down, I didn't have the time or energy to figure it out");
+    /*let lines = reader
+    .lines()
+    .flat_map(|x| {
+        x.map(|y| {
+            let fields = y.split(' ').collect::<Vec<&str>>();
+            let color = fields[2].parse::<Color>().unwrap();
+            (
+                match &fields[0] {
+                    &"U" => 3,
+                    &"D" => 1,
+                    &"R" => 0,
+                    &"L" | _ => 2,
+                },
+                fields[1].parse::<usize>().unwrap(),
+            )
+        })
+    })
+    .collect::<Vec<(u8, usize)>>();*/
+    let lines = reader
+        .lines()
+        .flat_map(|x| {
+            x.map(|y| {
+                let fields = y.split(' ').collect::<Vec<&str>>();
+                let color = fields[2].parse::<Color>().unwrap();
+                (
+                    color.blue % 16,
+                    color.red as usize * 256 * 16
+                        + color.green as usize * 16
+                        + color.blue as usize / 16,
+                )
+            })
+        })
+        .collect::<Vec<(u8, usize)>>();
+
+    let (bounds, start) = map_bounds_from_lines(&lines);
+    println!("{:?}", lines);
+
+    let mut row = start.0;
+    let mut col = start.1;
+    let mut area: i64 = 0;
+
+    let (mut last_way, _) = lines.last().unwrap();
+
+    for (i, (way, len)) in lines.iter().enumerate() {
+        println!("Area: {area}, Way: {way} Len: {len}");
+        println!("{row}, {col}");
+        let mut row_next = row;
+        let mut col_next = col;
+        match way {
+            1 => {
+                row_next -= *len;
+                //area += (row - row_next + 1) as i64;
+                //println!("DOWN PLUS: {}", (row - row_next + 1));
+            }
+            3 => {
+                row_next += *len;
+                //area += (row_next - row + 1) as i64;
+                //println!("UP PLUS: {}", (row_next - row + 1));
+            }
+            2 => {
+                col_next -= *len;
+
+                if last_way == 1 {
+                    if lines[i + 1].0 == 1 {
+                        println!(
+                            "Minus F--J: {} * {} = {}",
+                            row,
+                            (col - col_next),
+                            row as i64 * (col - col_next) as i64
+                        );
+                        area -= row as i64 * (col - col_next) as i64;
+                    } else {
+                        println!(
+                            "Minus L--J: {} * {} = {}",
+                            row,
+                            (col - col_next),
+                            row as i64 * (col - col_next + 1) as i64
+                        );
+                        area -= row as i64 * (col - col_next + 1) as i64;
+                    }
+                } else {
+                    if lines[i + 1].0 == 1 {
+                        println!(
+                            "Minus F--7: {} * {} = {}",
+                            row,
+                            (col - col_next),
+                            row as i64 * (col - col_next) as i64
+                        );
+                        area -= row as i64 * (col - col_next - 1) as i64;
+                    } else {
+                        println!(
+                            "Minus L--7: {} * {} = {}",
+                            row,
+                            (col - col_next),
+                            row as i64 * (col - col_next) as i64
+                        );
+                        area -= row as i64 * (col - col_next) as i64;
+                    }
+                }
+            }
+            0 => {
+                col_next += *len;
+
+                if last_way == 1 {
+                    if lines[i + 1].0 == 3 {
+                        area += (row + 1) as i64 * (col_next - col - 1) as i64;
+
+                        println!(
+                            "Plus L--J: {}",
+                            (row + 1) as i64 * (col_next - col - 1) as i64
+                        );
+                    } else {
+                        area += (row + 1) as i64 * (col_next - col) as i64;
+
+                        println!("Plus L--7: {}", (row + 1) as i64 * (col_next - col) as i64);
+                    }
+                } else {
+                    if lines[i + 1].0 == 3 {
+                        area += (row + 1) as i64 * (col_next - col) as i64;
+                        println!("Plus F--J: {}", (row + 1) as i64 * (col_next - col) as i64);
+                    } else {
+                        area += (row + 1) as i64 * (col_next - col + 1) as i64;
+
+                        println!(
+                            "Plus F--7: {}",
+                            (row + 1) as i64 * (col_next - col + 1) as i64
+                        );
+                    }
+                }
+            }
+            _ => {}
+        }
+        col = col_next;
+        row = row_next;
+        last_way = *way;
+    }
+
+    Ok(area as usize)
 }

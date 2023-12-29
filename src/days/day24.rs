@@ -4,8 +4,6 @@ use std::{
     str::FromStr,
 };
 
-use ndarray::{array, Array2, Shape};
-
 #[derive(Debug)]
 pub struct Line2D {
     pub start: (f64, f64),

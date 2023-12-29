@@ -16,7 +16,7 @@ pub enum State {
     Off,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Module {
     ConjModule(Vec<(String, Pulse)>, Vec<String>),
     FlipFlop(State, Vec<String>),
@@ -148,13 +148,13 @@ pub fn solution(reader: BufReader<File>) -> Result<usize, std::io::Error> {
     Ok(low * high)
 }
 
-pub fn push_button_check_rx(map: &mut HashMap<String, Module>) -> bool {
+pub fn push_button_check_x(map: &mut HashMap<String, Module>, x: &str) -> bool {
     let mut signs: VecDeque<(String, String, Pulse)> = VecDeque::new();
 
     signs.push_back(("".to_owned(), "broadcaster".to_owned(), Pulse::Low));
 
     while let Some((from, name, pulse)) = signs.pop_front() {
-        if name == "rx" && pulse == Pulse::Low {
+        if from == x && pulse == Pulse::High {
             return true;
         }
 
@@ -201,19 +201,82 @@ pub fn push_button_check_rx(map: &mut HashMap<String, Module>) -> bool {
     false
 }
 
+pub fn gcd(mut a: usize, mut b: usize) -> usize {
+    while a % b != 0 {
+        let m = a % b;
+        a = b;
+        b = m;
+    }
+
+    b
+}
+
+pub fn lcm(a: usize, b: usize) -> usize {
+    a * b / gcd(a, b)
+}
+
 pub fn solution_2(reader: BufReader<File>) -> Result<usize, std::io::Error> {
+    // Idea of looking at only 4 parts: https://www.reddit.com/r/adventofcode/comments/18mmfxb/comment/ke5a5fc/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
     let mut lines = reader.lines();
-    let mut map = read_modules(&mut lines);
+    let map = read_modules(&mut lines);
 
     let mut i = 1;
 
+    let jg;
+    let mut map_c = map.clone();
     loop {
         //println!("{:?}", map);
         //println!();
-        if push_button_check_rx(&mut map) {
-            return Ok(i);
+        if push_button_check_x(&mut map_c, "jg") {
+            jg = i;
+            break;
         }
 
         i += 1;
     }
+
+    let rh;
+    let mut map_c = map.clone();
+    i = 1;
+    loop {
+        //println!("{:?}", map);
+        //println!();
+        if push_button_check_x(&mut map_c, "rh") {
+            rh = i;
+            break;
+        }
+
+        i += 1;
+    }
+
+    let jm;
+    let mut map_c = map.clone();
+    i = 1;
+    loop {
+        //println!("{:?}", map);
+        //println!();
+        if push_button_check_x(&mut map_c, "jm") {
+            jm = i;
+            break;
+        }
+
+        i += 1;
+    }
+
+    let hf;
+    let mut map_c = map.clone();
+    i = 1;
+    loop {
+        //println!("{:?}", map);
+        //println!();
+        if push_button_check_x(&mut map_c, "hf") {
+            hf = i;
+            break;
+        }
+
+        i += 1;
+    }
+
+    println!("hf: {hf}, jm: {jm}, jg: {jg}, rh: {rh}");
+    Ok(lcm(lcm(hf, jm), lcm(jg, rh)))
 }
